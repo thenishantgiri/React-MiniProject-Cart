@@ -13,7 +13,8 @@ body {
 }
 
 .cart-item .right-block {
-  padding: 20px;
+  padding: 0 20px;
+  border-radius: 4px;
 }
 
 .cart-item-actions {

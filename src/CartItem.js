@@ -9,9 +9,32 @@ class CartItem extends React.Component {
       qty: 1,
       image: "",
     };
+
+    // testing: Batching -> synchronous
+    // this.testing();
     // this.increaseQuantity = this.increaseQuantity.bind(this);
   }
 
+  // testing() {
+  //   const promise = new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve("done");
+  //     }, 3000);
+  //   });
+
+  //   promise.then(() => {
+  //     this.setState({
+  //       qty: this.state.qty + 10,
+  //     });
+  //     this.setState({
+  //       qty: this.state.qty + 10,
+  //     });
+  //     this.setState({
+  //       qty: this.state.qty + 10,
+  //     });
+  //     console.log("state", this.state);
+  //   });
+  // }
   // we're using arrow functions to bind the value of this to the instance of the class
   increaseQuantity = () => {
     // this.state.qty++;
@@ -24,6 +47,17 @@ class CartItem extends React.Component {
     this.setState((oldState) => {
       return {
         qty: oldState.qty + 1,
+      };
+    });
+  };
+
+  decreaseQuantity = () => {
+    const { qty } = this.state;
+    if (qty === 0) return;
+
+    this.setState((oldState) => {
+      return {
+        qty: oldState.qty - 1,
       };
     });
   };
@@ -51,6 +85,7 @@ class CartItem extends React.Component {
               alt="decrease"
               className="action-icons"
               src="https://cdn-icons-png.flaticon.com/512/1828/1828906.png"
+              onClick={this.decreaseQuantity}
             />
             <img
               alt="delete"

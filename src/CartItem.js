@@ -6,7 +6,7 @@ const CartItem = (props) => {
     productDetails,
     onIncreaseQuantity,
     onDecreaseQuantity,
-    onDeleteItem,
+    onDeleteProduct,
   } = props;
 
   return (
@@ -37,7 +37,7 @@ const CartItem = (props) => {
             alt="delete"
             className="action-icons"
             src="https://cdn-icons-png.flaticon.com/512/497/497496.png"
-            onClick={() => onDeleteItem(productDetails.id)}
+            onClick={() => onDeleteProduct(productDetails.id)}
           />
         </div>
       </div>

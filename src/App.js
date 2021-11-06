@@ -36,11 +36,27 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // for fetching data once
+    // firebase
+    //   .firestore()
+    //   .collection("products")
+    //   .get()
+    //   .then((snapshot) => {
+    //     const products = snapshot.docs.map((doc) => {
+    //       const data = doc.data();
+
+    //       data["id"] = doc.id;
+    //       return data;
+    //     });
+
+    //     this.setState({ products, loading: false });
+    //   });
+
+    // for fetching data everytime the some change happens (add listener #socket)
     firebase
       .firestore()
       .collection("products")
-      .get()
-      .then((snapshot) => {
+      .onSnapshot((snapshot) => {
         const products = snapshot.docs.map((doc) => {
           const data = doc.data();
 
@@ -48,7 +64,10 @@ class App extends React.Component {
           return data;
         });
 
-        this.setState({ products, loading: false });
+        this.setState({
+          products,
+          loading: false,
+        });
       });
   }
 

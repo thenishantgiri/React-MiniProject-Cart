@@ -2,34 +2,54 @@ import React from "react";
 import Cart from "./Cart";
 import Navbar from "./Navbar";
 
+import firebase from "firebase";
+
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
       products: [
-        {
-          title: "MacBook Pro",
-          price: 245000,
-          qty: 1,
-          img: "https://t4.ftcdn.net/jpg/01/93/97/61/240_F_193976127_Y0QpwEf8mSk74vfCGdXCFA6zyXfMxj8L.jpg",
-          id: 1,
-        },
-        {
-          title: "iPhone",
-          price: 99999,
-          qty: 1,
-          img: "https://t3.ftcdn.net/jpg/03/95/79/12/240_F_395791244_Y78KXtZUeSOFjjOPX6gsMSHlR1ajAouZ.jpg",
-          id: 2,
-        },
-        {
-          title: "iWatch",
-          price: 49999,
-          qty: 1,
-          img: "https://t4.ftcdn.net/jpg/03/68/78/73/240_F_368787316_Y8DQNkThcfroHZqcKbweB2eDCB8ITUzs.jpg",
-          id: 3,
-        },
+        // {
+        //   title: "MacBook Pro",
+        //   price: 245000,
+        //   qty: 1,
+        //   img: "https://t4.ftcdn.net/jpg/01/93/97/61/240_F_193976127_Y0QpwEf8mSk74vfCGdXCFA6zyXfMxj8L.jpg",
+        //   id: 1,
+        // },
+        // {
+        //   title: "iPhone",
+        //   price: 99999,
+        //   qty: 1,
+        //   img: "https://t3.ftcdn.net/jpg/03/95/79/12/240_F_395791244_Y78KXtZUeSOFjjOPX6gsMSHlR1ajAouZ.jpg",
+        //   id: 2,
+        // },
+        // {
+        //   title: "iWatch",
+        //   price: 49999,
+        //   qty: 1,
+        //   img: "https://t4.ftcdn.net/jpg/03/68/78/73/240_F_368787316_Y8DQNkThcfroHZqcKbweB2eDCB8ITUzs.jpg",
+        //   id: 3,
+        // },
       ],
+      loading: true,
     };
+  }
+
+  componentDidMount() {
+    firebase
+      .firestore()
+      .collection("products")
+      .get()
+      .then((snapshot) => {
+        const products = snapshot.docs.map((doc) => {
+          const data = doc.data();
+
+          data["id"] = doc.id;
+          return data;
+        });
+
+        this.setState({ products, loading: false });
+      });
   }
 
   handleIncreaseQuantity = (product) => {
@@ -87,7 +107,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { products } = this.state;
+    const { products, loading } = this.state;
     return (
       <div className="App">
         <Navbar count={this.getCartCount()} />
@@ -97,6 +117,7 @@ class App extends React.Component {
           onDecreaseQuantity={this.handleDecreaseQuantity}
           onDeleteProduct={this.handleDeleteProduct}
         />
+        {loading && <h1>loading products...</h1>}
         <div style={{ padding: 10, fontSize: 20 }}>
           TOTAL: {this.getCartTotal()}
         </div>

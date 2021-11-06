@@ -54,19 +54,23 @@ class App extends React.Component {
     //   });
 
     // for fetching data everytime the some change happens (add listener #socket)
-    this.db.collection("products").onSnapshot((snapshot) => {
-      const products = snapshot.docs.map((doc) => {
-        const data = doc.data();
+    this.db
+      .collection("products")
+      // .where("price", ">", 49999) // querying params
+      .orderBy("price", "asc") // sorting params
+      .onSnapshot((snapshot) => {
+        const products = snapshot.docs.map((doc) => {
+          const data = doc.data();
 
-        data["id"] = doc.id;
-        return data;
-      });
+          data["id"] = doc.id;
+          return data;
+        });
 
-      this.setState({
-        products,
-        loading: false,
+        this.setState({
+          products,
+          loading: false,
+        });
       });
-    });
   }
 
   handleIncreaseQuantity = (product) => {

@@ -97,11 +97,16 @@ class App extends React.Component {
 
     if (products[index].qty === 0) return;
 
-    products[index].qty -= 1;
+    const docRef = this.db.collection("products").doc(products[index].id);
 
-    this.setState({
-      products: products,
-    });
+    docRef
+      .update({ qty: (products[index].qty -= 1) })
+      .then(() => {
+        console.log("Updated successfully");
+      })
+      .catch((err) => {
+        console.error("Error: ", err);
+      });
   };
 
   handleDeleteProduct = (id) => {
